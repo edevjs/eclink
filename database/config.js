@@ -9,7 +9,9 @@ require('dotenv').config();
 const dbConnection = async() => {
 
     try {
-        await mongoose.connect('mongodb://' + process.env.MONGO_URL + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DB, {
+        // await mongoose.connect('mongodb://' + process.env.MONGO_URL + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DB, {
+
+        await mongoose.connect('mongodb+srv://admin:admin123@cluster0.hollk.mongodb.net/eclink?retryWrites=true&w=majority', {
             useNewUrlParser: true, 
             useUnifiedTopology: true
         });
@@ -19,8 +21,6 @@ const dbConnection = async() => {
         console.log("Error conectando con bbdd " + err);
         throw new Error('Error conectando con bbdd ' + err);
     }
-
-
 }
 
 module.exports = {
