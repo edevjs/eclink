@@ -3,13 +3,14 @@
 */
 
 const express = require('express');
-const { getAllLinks } = require('../controllers/links');
+const { getAllLinks, newLink } = require('../controllers/links');
 const router = express.Router();
 
 
 
 
-router.route('/').post(getAllLinks);
+router.route('/').get(getAllLinks);
+router.route('/').post(newLink);
   
 
 module.exports = router;

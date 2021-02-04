@@ -17,8 +17,9 @@ const LinkSchema = mongoose.Schema({
     },
     icon:{
         type: String,
-    },
-    author:{
+    }
+    ,
+    user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
@@ -26,7 +27,7 @@ const LinkSchema = mongoose.Schema({
 });
 
 
-UserSchema.method('toJSON', function () {
+LinkSchema.method('toJSON', function () {
     const { __v, _id, ...object} = this.toObject();
     object.uid = _id;
     return object;
