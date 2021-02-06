@@ -76,7 +76,7 @@ app.use( '/api/user', require('./routes/users') );
 app.use( '/api/login', require('./routes/auth') );
 app.use( '/api/link', require('./routes/links') );
 
-app.listen( process.env.PORT, () => {
+app.listen( 3000, () => {
   console.log('Servidor corriendo en puerto ' + 3000);
 });
 // express.import('models')
