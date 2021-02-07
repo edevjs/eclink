@@ -34,9 +34,17 @@ app.use( '/api/user', require('./routes/users') );
 app.use( '/api/login', require('./routes/auth') );
 app.use( '/api/link', require('./routes/links') );
 
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
+
+/*
 app.listen( 3000, () => {
   console.log('Servidor corriendo en puerto ' + 3000);
 });
+*/
 // express.import('models')
 
 
