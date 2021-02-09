@@ -9,7 +9,7 @@ const generateTOKEN = ( uid ) => {
             uid
         };
     
-        /*jwt.sign( payload, process.env.JWT_SECRET_KEY, {
+        jwt.sign( payload, process.env.JWT_SECRET_KEY, {
             expiresIn: '12h'
         }, ( err, token ) =>{
             if (err) {
@@ -20,7 +20,7 @@ const generateTOKEN = ( uid ) => {
             }
     
     
-        });*/
+        });
 
 
     });

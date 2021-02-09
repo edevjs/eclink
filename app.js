@@ -13,8 +13,10 @@ const app = express();
 // Configurar cors
 app.use( cors() );
 
+// express
 app.use( express.json() );
 
+// headers
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Credentials", true);
@@ -23,11 +25,14 @@ app.use(function(req, res, next) {
   next();
 });
 
+// body parser
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Conexión con base de datos
 dbConnection();
+
+app.use( express.static('public') )
 
 // Rutas
 app.use( '/api/user', require('./routes/users') );
@@ -40,14 +45,4 @@ app.listen(PORT, () => {
     console.log(`Our app is running on port ${ PORT }`);
 });
 
-/*
-app.listen( 3000, () => {
-  console.log('Servidor corriendo en puerto ' + 3000);
-});
-*/
-// express.import('models')
 
-
-// express.set('routes', require('./routes'))
-
-// require('./routes/api/mongo-client')

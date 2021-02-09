@@ -1,6 +1,7 @@
 const {response} = require('express');
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const { generateTOKEN } = require('../helpers/jwt');
 
 
 const getUsers = async(req, res) => {
