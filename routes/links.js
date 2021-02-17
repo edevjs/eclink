@@ -1,16 +1,16 @@
 /*
     Route: api/links
 */
-
-const express = require('express');
+const { Router } = require('express');
 const { getAllLinks, newLink } = require('../controllers/links');
-const router = express.Router();
+const { validateJWT } = require('../middleware/validate-jwt');
 
 
+var router = Router();
 
 
-router.route('/').get(getAllLinks);
-router.route('/').post(newLink);
+router.get('/', validateJWT, getAllLinks);
+router.post('/', validateJWT, newLink);
   
 
 module.exports = router;
