@@ -13,7 +13,8 @@ const LinkSchema = mongoose.Schema({
         type: String,
     },
     sections:{
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Section'
     },
     icon:{
         type: String,
@@ -22,6 +23,9 @@ const LinkSchema = mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    image: {
+        type: mongoose.Schema.Types.Buffer
     }
     
 });

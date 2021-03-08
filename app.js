@@ -28,6 +28,7 @@ app.use(function(req, res, next) {
 // body parser
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(bodyParser({limit: '50mb'}));
 
 // Conexión con base de datos
 dbConnection();
@@ -38,11 +39,12 @@ app.use( express.static('public') )
 app.use( '/api/user', require('./routes/users') );
 app.use( '/api/login', require('./routes/auth') );
 app.use( '/api/link', require('./routes/links') );
+app.use( '/api/section', require('./routes/section') );
 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+    console.log(`Our app is running on port ${ PORT } ....`);
 });
 
 

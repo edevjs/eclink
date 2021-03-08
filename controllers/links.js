@@ -1,6 +1,7 @@
-const {response} = require('express');
 const jwt = require('jsonwebtoken');
 const Link = require('../models/link');
+
+const puppeteer = require('puppeteer');
 
 
 getAllLinks = async(req, res) => {
@@ -8,7 +9,10 @@ getAllLinks = async(req, res) => {
     const token = req.header('x-token');
     const { uid } = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const links = await Link.find({'user': uid});
+    const links = await Link.find({'user': uid}).populate('user').populate({
+        path: 'sections',
+        model: 'Section'
+    });
 
     res.json({
         ok: true,
@@ -17,27 +21,66 @@ getAllLinks = async(req, res) => {
     
 };
 
+
+
+takeScreenshot = async (params) => {
+	const browser = await puppeteer.launch({
+		args: ['--no-sandbox']
+	});
+	const page = await browser.newPage();
+	await page.goto(params.url, {waitUntil: 'networkidle2'});
+
+	const buffer = await page.screenshot();
+
+	await page.close();
+	await browser.close();
+  
+  	return buffer;
+}
+
+
 newLink =  async(req, res) => {
 
     try {
-        console.log('newLink')
-        const token = req.header('x-token');
-        const { uid } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const body = req.body;
 
-        console.log(uid);
+        if( body && body.uid ){
+            let link = Link.findById(body.uid);
+            if ( !link ) {
+                return res.status(404).json({
+                    ok: true,
+                    msg: 'Not foud link',
+                });
+            }
+  
+            const buffer = await takeScreenshot(req.body);
 
-        req.body.user = uid;
+            link = await Link.updateOne({ _id: body.uid }, { $set: { title: body.title, url: body.url, sections: body.sections, image: buffer } }, {new: true})
+            
+            res.json({
+                ok: true,
+                link
+            });
 
-        const link = new Link(req.body);
-        await link.save();
-        // respuesta
-        const links = await Link.find({'user': uid});
+        } else {
+            const token = req.header('x-token');
+            const { uid } = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-        res.json({
-            ok: true,
-            links
-        });
-    
+            const buffer = await takeScreenshot(req.body);
+
+            req.body.user = uid;
+            req.body.image = buffer;
+
+            const link = new Link(req.body);
+            await link.save();
+            const links = await Link.find({'user': uid});
+
+            res.json({
+                ok: true,
+                links
+            });
+        }
+        
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -47,6 +90,7 @@ newLink =  async(req, res) => {
     }
 
 };
+
 
 module.exports = {
     getAllLinks,
