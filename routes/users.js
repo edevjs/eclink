@@ -3,14 +3,16 @@
 */
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUsers, newUser, updateUser } = require('../controllers/user');
+const { getUser, getUsers, newUser, updateUser } = require('../controllers/user');
 const { validateFields } = require('../middleware/validate-fields');
 const { validateJWT } = require('../middleware/validate-jwt');
 
 
 var router = Router();
 
-router.get('/', validateJWT, getUsers );
+router.get('/', validateJWT, getUser );
+
+router.get('/all', validateJWT, getUsers );
 
 // ruta con validadores (express-validator)
 router.post('/', [

@@ -23,10 +23,7 @@ getAllLinks = async(req, res) => {
 
 
 
-takeScreenshot = async (params) => {
-	// const browser = await puppeteer.launch({
-	// 	args: ['--no-sandbox']
-	// });
+takeScreenshot = async(params) => {
 
     const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
 

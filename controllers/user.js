@@ -1,7 +1,33 @@
 const {response} = require('express');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const { generateTOKEN } = require('../helpers/jwt');
+
+
+const getUser = async(req, res) => {
+
+    const token = req.header('x-token');
+    const { uid } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    const user = await User.findOne({'_id': uid});
+
+    // const {password, ...user} = usr;
+
+    if(user) {
+        res.json({
+            ok: true,
+            user,
+        });
+    } else {
+        res.json({
+            ok: false,
+            msg: 'User not found',
+        });
+    }
+
+}
+
 
 
 const getUsers = async(req, res) => {
@@ -100,6 +126,7 @@ const updateUser = async(req, res = response) =>{
 
 module.exports = {
     getUsers,
+    getUser,
     newUser,
     updateUser
 }
